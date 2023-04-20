@@ -308,7 +308,16 @@ def add_trees(t1, t2):
       5
     """
     "*** YOUR CODE HERE ***"
+    if is_leaf(t1):
+        return tree(label(t1) + label(t2), branches(t2))
+    if is_leaf(t2):
+        return tree(label(t1) + label(t2), branches(t1))
+    
+    fewer_branches, more_branches = sorted([branches(t1), branches(t2)], key=len)
+    tree1 = fewer_branches + [tree(0) for _ in range(len(more_branches) - len(fewer_branches))]
+    tree2 = more_branches
 
+    return tree(label(t1) + label(t2), [ add_trees(b1, b2) for b1, b2 in zip(tree1, tree2) ])
 
 def build_successors_table(tokens):
     """Return a dictionary: keys are words; values are lists of successors.
