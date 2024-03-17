@@ -107,7 +107,7 @@ class Name(Expr):
         None
         """
         "*** YOUR CODE HERE ***"
-        if self.var_name in env.keys():
+        if self.var_name in env:
             return env[self.var_name]
         return None
 
@@ -176,12 +176,7 @@ class CallExpr(Expr):
         Number(14)
         """
         "*** YOUR CODE HERE ***"
-        operator = self.operator.eval(env)
-        operands = []
-        for x in self.operands:
-            operands.append(x.eval(env))
-        return operator.apply(operands)
-        
+        return self.operator.eval(env).apply([operand.eval(env) for operand in self.operands])
 
     def __str__(self):
         function = str(self.operator)
@@ -291,7 +286,12 @@ class LambdaFunction(Value):
             raise TypeError("Oof! Cannot apply number {} to arguments {}".format(
                 comma_separated(self.parameters), comma_separated(arguments)))
         "*** YOUR CODE HERE ***"
-
+        new_env = self.parent.copy()
+        for key, val in zip(self.parameters, arguments):
+            new_env[key] = val
+            
+        return self.body.eval(new_env)
+                                              
     def __str__(self):
         definition = LambdaExpr(self.parameters, self.body)
         return '<function {}>'.format(definition)
@@ -300,7 +300,7 @@ class PrimitiveFunction(Value):
     """A built-in function. For a full list of built-in functions, see
     `global_env` at the bottom of this file.
 
-    The `operator` attribute is a Python function takes Python numbers and
+    The `operator` attribute is a Python fuunction takes Python numbers and
     returns a Python number.
     """
     def __init__(self, operator):
@@ -332,4 +332,3 @@ global_env = {
     'sub': PrimitiveFunction(operator.sub),
     'truediv': PrimitiveFunction(operator.truediv),
 }
-
