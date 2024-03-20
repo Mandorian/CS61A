@@ -1,9 +1,9 @@
 (define (over-or-under num1 num2)
   'YOUR-CODE-HERE
   (cond
-      ((> num1 num2) 1)
-      ((< num1 num2) -1)
-      ((= num1 num2) 0)
+    ((< num1 num2) -1)
+    ((= num1 num2) 0)
+    (else 1)
   )
 )
 
@@ -34,19 +34,19 @@
 
 
 (define lst
-  (cons (cons 1 nil)
-  		(cons 2 (cons (cons 3 (cons 4 nil))
-			(cons 5 nil))))
+  (cons (cons 1 nil) (cons 2 (cons (cons 3 (cons 4 nil)) (cons 5 nil))))
 )
 
 
 (define (remove item lst)
   'YOUR-CODE-HERE
-  (if (null lst) nil
-		(if (= item (car lst))
-				(remove item (cdr lst))
-				(cons (car lst) (remove item (cdr lst)))
-		)
+
+  (if (null? lst)
+    nil
+    (if (= (car lst) item)
+      (remove item (cdr lst))
+      (cons (car lst) (remove item (cdr lst)))
+    )  
   )
 )
 

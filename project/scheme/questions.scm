@@ -6,15 +6,23 @@
 ; Some utility functions that you may find useful to implement
 
 (define (zip pairs)
-  'replace-this-line)
+  
+)
 
 
 ;; Problem 15
 ;; Returns a list of two-element lists
 (define (enumerate s)
   ; BEGIN PROBLEM 15
-  'replace-this-line
+
+  (define (solve index lst)
+    (if (null? lst)
+      nil
+      (append (list ) (list (list index (car lst))) (solve (+ index 1) (cdr lst)))
+    )
   )
+  (solve 0 s)
+)
   ; END PROBLEM 15
 
 ;; Problem 16
@@ -23,8 +31,14 @@
 ;; the merged lists.
 (define (merge comp list1 list2)
   ; BEGIN PROBLEM 16
-  'replace-this-line
+  (if (or (null? list1) (null? list2))
+    (append list1 list2)
+    (if (comp (car list1) (car list2))
+      (append (list (car list1)) (merge comp (cdr list1) list2))
+      (append (list (car list2)) (merge comp list1 (cdr list2)))
+    )
   )
+)
   ; END PROBLEM 16
 
 
@@ -36,10 +50,21 @@
 ;; Problem 17
 
 (define (nondecreaselist s)
-    ; BEGIN PROBLEM 17
-    'replace-this-line
+  ; BEGIN PROBLEM 17
+  (define (solve result temp_list last_val lst)
+    (if (or (null? lst))
+      (if (= 0 (length temp_list))
+        result
+        (append result (list temp_list))
+      )
+      (if (>= (car lst) last_val)
+        (solve result (append temp_list (list (car lst))) (car lst) (cdr lst))
+        (solve (append result (list temp_list)) (list ) 0 lst))
+      )
     )
-    ; END PROBLEM 17
+  (solve (list ) (list ) 0 s)
+)
+  ; END PROBLEM 17
 
 ;; Problem EC
 ;; Returns a function that checks if an expression is the special form FORM

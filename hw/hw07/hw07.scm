@@ -1,11 +1,21 @@
 (define (filter-lst fn lst)
   'YOUR-CODE-HERE
-  (if (eq? lst nil)
-	nil
-	(if (eq? (fn (car lst)) #t)
-		(cons (car lst) (filter-lst fn (cdr lst)))
-		(filter-lst fn (cdr lst))
-	)
+  (if (null? lst)
+    nil
+    (if (fn (car lst))
+      (cons (car lst) (filter-lst fn (cdr lst)))
+      (filter-lst fn (cdr lst))
+    )
+  )
+)
+
+(define (remove val lst)
+  (if (null? lst)
+    nil
+    (if (not (= val (car lst)))
+      (cons (car lst) (remove val (cdr lst)))
+      (remove val (cdr lst))
+    )
   )
 )
 
@@ -18,13 +28,9 @@
 
 (define (interleave first second)
   'YOUR-CODE-HERE
-  (if (or (eq? first nil) (eq? second nil))
-	(append first second)
-	(cons (car first)
-		(cons (car second)	
-			(interleave (cdr first) (cdr second))
-		)
-	)
+  (if (or (null? first) (null? second))
+    (append first second)
+    (cons (car first) (cons (car second) (interleave (cdr first) (cdr second))))
   )
 )
 
@@ -40,27 +46,17 @@
 
 (define (accumulate combiner start n term)
   'YOUR-CODE-HERE
-  (if (= n 0)
-	start
-	(accumulate combiner (combiner start (term n)) (- n 1) term)
+  (if (= 0 n)
+    start
+    (combiner (term n) (accumulate combiner start (- n 1) term))
   )
-)
-
-(define (remove item lst)
-	(if (eq? lst nil)
-		nil
-		(if (= item (car lst))
-			(remove item (cdr lst))
-			(cons (car lst) (remove item (cdr lst)))
-		)
-	)
 )
 
 (define (no-repeats lst)
   'YOUR-CODE-HERE
-  (if (eq? lst nil)
-	nil
-	(cons (car lst) (no-repeats (remove (car lst) (cdr lst))))
+  (if (null? lst)
+    nil
+    (cons (car lst) (no-repeats (remove (car lst) (cdr lst))))
   )
 )
 
